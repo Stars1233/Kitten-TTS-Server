@@ -164,6 +164,8 @@ loaded_model_device: Optional[str] = None
 
 # Voice alias mapping for v0.8 models (e.g. "Jasper" -> "expr-voice-2-m")
 _voice_aliases: Dict[str, str] = {}
+# Speed priors per voice from model config (per-voice speed correction factors)
+_speed_priors: Dict[str, float] = {}
 
 # --- Async Loading & Cancellation ---
 _load_lock = threading.Lock()
@@ -209,11 +211,21 @@ def is_loading() -> bool:
 
 
 def get_available_voices() -> List[str]:
-    """Returns the voice list for the currently loaded model."""
+    """Returns the named voice list for the currently loaded model (for UI dropdown)."""
     if loaded_model_selector and loaded_model_selector in MODEL_REGISTRY:
         return list(MODEL_REGISTRY[loaded_model_selector]["voices"])
     # Fallback
     return list(_V01_VOICES)
+
+
+def get_all_accepted_voices() -> List[str]:
+    """Returns all accepted voice identifiers (named + internal) for API validation."""
+    named = get_available_voices()
+    # Also accept raw internal voice keys (expr-voice-*) for API compatibility
+    if voices_data is not None:
+        internal = list(voices_data.keys())
+        return list(dict.fromkeys(named + internal))  # deduplicated, order preserved
+    return named
 
 
 def get_model_info() -> Dict[str, Any]:
@@ -450,14 +462,20 @@ def load_model() -> bool:
 
         # Load voice aliases - v0.8 models have these in config.json,
         # v0.1/v0.2 models use our own named aliases
-        global _voice_aliases
+        global _voice_aliases, _speed_priors
         _voice_aliases = {}
+        _speed_priors = {}
         if "voice_aliases" in model_config:
             _voice_aliases = dict(model_config["voice_aliases"])
             logger.info(f"Loaded voice aliases from model config: {_voice_aliases}")
         elif reg["version"] in ("0.1", "0.2"):
             _voice_aliases = dict(_V01_VOICE_ALIASES)
             logger.info(f"Applied v0.1 named voice aliases: {_voice_aliases}")
+
+        # Load speed priors (per-voice speed correction factors from model config)
+        if "speed_priors" in model_config:
+            _speed_priors = dict(model_config["speed_priors"])
+            logger.info(f"Loaded speed priors: {_speed_priors}")
 
         # Phase 5: Initialize ONNX session
         _check_cancelled()
@@ -558,7 +576,7 @@ def unload_model() -> bool:
     """
     global onnx_session, voices_data, MODEL_LOADED
     global loaded_model_selector, loaded_model_repo_id, loaded_model_device
-    global _voice_aliases
+    global _voice_aliases, _speed_priors
 
     logger.info("Initiating model unload sequence...")
 
@@ -576,6 +594,7 @@ def unload_model() -> bool:
     loaded_model_repo_id = None
     loaded_model_device = None
     _voice_aliases = {}
+    _speed_priors = {}
 
     # Force garbage collection
     gc.collect()
@@ -684,18 +703,24 @@ def synthesize(
         logger.error("KittenTTS model is not loaded. Cannot synthesize audio.")
         return None, None
 
-    # Validate voice against loaded model's voice list
-    available = get_available_voices()
-    if voice not in available:
+    # Validate voice against all accepted identifiers (named + internal)
+    accepted = get_all_accepted_voices()
+    if voice not in accepted:
         logger.error(
-            f"Voice '{voice}' not available for current model. Available voices: {available}"
+            f"Voice '{voice}' not available for current model. Available voices: {accepted}"
         )
         return None, None
 
-    # Resolve voice aliases (v0.8 named voices -> internal expr-voice keys)
+    # Resolve voice aliases (named voices -> internal expr-voice keys)
     internal_voice = _voice_aliases.get(voice, voice)
     if internal_voice != voice:
         logger.debug(f"Resolved voice alias '{voice}' -> '{internal_voice}'")
+
+    # Apply speed prior for this voice if available (from model config)
+    prior = _speed_priors.get(internal_voice, 1.0)
+    if prior != 1.0:
+        speed = speed * prior
+        logger.debug(f"Applied speed prior {prior} for voice '{internal_voice}', effective speed: {speed}")
 
     try:
         logger.debug(f"Synthesizing with voice='{voice}' (internal='{internal_voice}'), speed={speed}")
@@ -703,9 +728,12 @@ def synthesize(
         # Get voice embedding and ensure correct shape [1, 256]
         voice_embedding = voices_data[internal_voice]
         if voice_embedding.ndim == 2 and voice_embedding.shape[0] > 1:
-            # v0.8 models have (400, 256) embeddings - take the first row
-            voice_embedding = voice_embedding[0:1]
-            logger.debug(f"Sliced v0.8 voice embedding to shape {voice_embedding.shape}")
+            # ONNX2: multiple reference embeddings, select based on text length
+            # for varied prosody across different text lengths
+            text_length = len(text)
+            ref_id = min(text_length, voice_embedding.shape[0] - 1)
+            voice_embedding = voice_embedding[ref_id:ref_id + 1]
+            logger.debug(f"Selected ONNX2 embedding row {ref_id} (text_len={text_length}), shape {voice_embedding.shape}")
         elif voice_embedding.ndim == 1:
             voice_embedding = voice_embedding.reshape(1, -1)
         voice_embedding = voice_embedding.astype(np.float32)

@@ -2,7 +2,7 @@
 
 **Self-host the ultra-lightweight [KittenTTS model](https://github.com/KittenML/KittenTTS) with this enhanced API server. Now supports all 7 KittenTTS models — from the tiny 15M Nano to the 80M Mini — with hot-swappable model switching, an intuitive Web UI, a flexible API, large text processing for audiobooks, and high-performance GPU acceleration.**
 
-This server provides a robust, user-friendly, and powerful interface for the KittenTTS engine family, an open-source, realistic text-to-speech system. This project significantly enhances the original model by adding a full-featured server, an easy-to-use UI, and an optimized inference pipeline for hardware ranging from NVIDIA GPUs to CPUs and even the Raspberry Pi 5 (RP5) and Raspberry Pi 4 (RP4).
+This server provides a robust, user-friendly, and powerful interface for the KittenTTS engine family, an open-source, realistic text-to-speech system. This project significantly enhances the original model by adding a full-featured server, an easy-to-use UI, and an optimized inference pipeline for hardware ranging from NVIDIA GPUs to CPUs and even the Raspberry Pi 5.
 
 [![Project Link](https://img.shields.io/badge/GitHub-devnen/Kitten--TTS--Server-blue?style=for-the-badge&logo=github)](https://github.com/devnen/Kitten-TTS-Server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
@@ -21,15 +21,15 @@ This server provides a robust, user-friendly, and powerful interface for the Kit
 
 ---
 
-## What's New
+## 🆕 What's New
 
-### Complete KittenTTS model family support (new)
+### 🎯 Complete KittenTTS model family support (new)
 
 - Added full support for **all 7 KittenTTS models** across three model sizes (Nano, Micro, Mini) and two generations (v0.1/v0.2 and v0.8).
 - Models range from the ultra-compact **15M-parameter Nano** to the high-quality **80M-parameter Mini**, all running on ONNX for maximum portability.
 - v0.8 models feature improved expressivity, quantized INT8 variants for minimal footprint, and named voices (Bella, Jasper, Luna, Bruno, Rosie, Hugo, Kiki, Leo).
 
-### Hot-swappable model switching (new)
+### 🔁 Hot-swappable model switching (new)
 
 - Added a new **model selector** dropdown at the top of the Web UI.
 - All 7 models are **hot-swappable** — select from the dropdown, click "Apply & Restart", and the backend automatically downloads (if needed), unloads the current model, and loads your choice. No server restart required.
@@ -37,14 +37,14 @@ This server provides a robust, user-friendly, and powerful interface for the Kit
 - Models are **downloaded automatically** from Hugging Face on first use and cached locally in the project's `model_cache` directory for instant subsequent loads.
 - **Cancellation support** — if you change your mind during a download, select a different model and the current load is cancelled automatically.
 
-### Named voices for all models (new)
+### 🎤 Named voices for all models (new)
 
 - All models now use **human-friendly voice names** instead of technical identifiers.
 - v0.1/v0.2 models: **Amber**, **Felix**, **Clara**, **Marcus**, **Ivy**, **Oscar**, **Nora**, **Reed** (4 female, 4 male).
 - v0.8 models: **Bella**, **Jasper**, **Luna**, **Bruno**, **Rosie**, **Hugo**, **Kiki**, **Leo** (4 female, 4 male).
 - The voice dropdown automatically updates when you switch models.
 
-### Complete model lineup
+### ✅ Complete model lineup
 
 **You now have access to the entire KittenTTS family:**
 
@@ -62,7 +62,7 @@ This server provides a robust, user-friendly, and powerful interface for the Kit
 
 ---
 
-## Overview: Enhanced KittenTTS Generation
+## 🗣️ Overview: Enhanced KittenTTS Generation
 
 The [KittenTTS model by KittenML](https://github.com/KittenML/KittenTTS) provides a foundation for generating high-quality speech from models smaller than 80MB. This project elevates that foundation into a production-ready service by providing a robust [FastAPI](https://fastapi.tiangolo.com/) server that makes KittenTTS significantly easier to use, more powerful, and drastically faster.
 
@@ -77,17 +77,15 @@ We solve the complexity of setting up and running the model by offering:
 *   **Cross-platform support** for Windows and Linux, with clear setup instructions.
 *   **Docker support** for easy, reproducible containerized deployment.
 
-## Raspberry Pi & Edge Device Support
+## 🍓 Raspberry Pi & Edge Device Support
 
 The ultra-lightweight nature of the KittenTTS model and the efficiency of this server make it a perfect candidate for running on single-board computers (SBCs) and other edge devices.
 
-*   **Raspberry Pi 5 (RP5):** Confirmed to run with **excellent performance**. The server is fast and responsive, easily handling requests from other devices on the same local network (LAN). This makes it ideal for local network services, home automation, and other DIY projects.
-
-*   **Raspberry Pi 4 (RP4):** Testing is currently in progress. Not working on the 32-bit Raspberry Pi OS.
+*   ✅ **Raspberry Pi 5 (RP5):** Confirmed to run with **excellent performance**. The server is fast and responsive, easily handling requests from other devices on the same local network (LAN). This makes it ideal for local network services, home automation, and other DIY projects.
 
 To install, simply follow the standard **Linux installation guide** provided in this README.
 
-## GPU Acceleration included
+## 🔥 GPU Acceleration included
 
 A standout feature of this server is the implementation of **high-performance GPU acceleration**, a capability not available in the original KittenTTS project. While the base model is CPU-only, this server unlocks the full potential of your hardware.
 
@@ -97,7 +95,7 @@ A standout feature of this server is the implementation of **high-performance GP
 
 This enhancement transforms KittenTTS from a lightweight-but-modest engine into a high-speed synthesis powerhouse.
 
-## Alternative to Piper TTS
+## 🔄 Alternative to Piper TTS
 
 The [KittenTTS model](https://github.com/KittenML/KittenTTS) serves as an excellent alternative to [Piper TTS](https://github.com/rhasspy/piper) for fast generation on limited compute and edge devices like Raspberry Pi 5.
 
@@ -112,34 +110,34 @@ While KittenTTS provides the ultra-lightweight foundation, this server transform
 
 Perfect for users seeking Piper's offline capabilities with better performance on limited hardware and modern server infrastructure.
 
-## Key Features of This Server
+## ✨ Key Features of This Server
 
-*   **Multi-Model Support:** All 7 KittenTTS models (Nano, Micro, Mini across v0.1/v0.2/v0.8) with hot-swappable switching from the UI.
-*   **Automatic Model Download:** Models are downloaded from Hugging Face on first use and cached locally.
-*   **True GPU Acceleration:** Full support for **NVIDIA (CUDA)** via an optimized `onnxruntime-gpu` pipeline with I/O Binding for maximum performance.
-*   **Large Text & Audiobook Generation:**
+*   🔁 **Multi-Model Support:** All 7 KittenTTS models (Nano, Micro, Mini across v0.1/v0.2/v0.8) with hot-swappable switching from the UI.
+*   📦 **Automatic Model Download:** Models are downloaded from Hugging Face on first use and cached locally.
+*   ⚡ **True GPU Acceleration:** Full support for **NVIDIA (CUDA)** via an optimized `onnxruntime-gpu` pipeline with I/O Binding for maximum performance.
+*   📚 **Large Text & Audiobook Generation:**
     *   Automatically handles long texts by intelligently splitting them based on sentence boundaries.
     *   Processes each chunk individually and seamlessly concatenates the resulting audio.
     *   **Ideal for audiobooks** - paste entire books and get professional-quality audio.
-*   **Modern Web Interface:**
+*   🖥️ **Modern Web Interface:**
     *   Intuitive UI for text input, model selection, voice selection, and parameter adjustment.
     *   Real-time waveform visualization of generated audio.
     *   Progress modal for model downloads with real-time status updates.
-*   **Named Voices:**
+*   🎤 **Named Voices:**
     *   Up to 8 named voices per model (4 male, 4 female).
     *   Voice list updates automatically when switching models.
-*   **Dual API Endpoints:**
+*   ⚙️ **Dual API Endpoints:**
     *   A primary `/tts` endpoint offering full control over all generation parameters.
     *   An OpenAI-compatible `/v1/audio/speech` endpoint for seamless integration into existing workflows.
-*   **Easy Configuration:**
+*   🔧 **Easy Configuration:**
     *   All settings are managed through a single `config.yaml` file.
     *   The server automatically creates a default config on the first run.
-*   **UI State Persistence:** The web interface remembers your last-used text, voice, and settings to streamline your workflow.
-*   **Docker Support:** Easy, reproducible deployment for both CPU and GPU via Docker Compose.
+*   💾 **UI State Persistence:** The web interface remembers your last-used text, voice, and settings to streamline your workflow.
+*   🐳 **Docker Support:** Easy, reproducible deployment for both CPU and GPU via Docker Compose.
 
 ---
 
-## System Prerequisites
+## 🔩 System Prerequisites
 
 *   **Operating System:** Windows 10/11 (64-bit) or Linux (Debian/Ubuntu recommended).
 *   **Python:** Version 3.10 or later.
@@ -149,14 +147,13 @@ Perfect for users seeking Piper's offline capabilities with better performance o
     *   **Linux:** `sudo apt install espeak-ng`
 *   **Raspberry Pi:**
     *   Raspberry Pi 5
-    *   Raspberry Pi 4
 *   **(For GPU Acceleration):**
     *   An **NVIDIA GPU** with CUDA support.
 *   **(For Linux Only):**
     *   `libsndfile1`: Audio library needed by `soundfile`. Install via `sudo apt install libsndfile1`.
     *   `ffmpeg`: For robust audio operations. Install via `sudo apt install ffmpeg`.
 
-## Installation and Setup
+## 💻 Installation and Setup
 
 This project uses specific dependency files and a clear process to ensure a smooth, one-command installation for your hardware.
 
@@ -281,7 +278,7 @@ pip install -r requirements-nvidia.txt
 
 ---
 
-## Running the Server
+## ▶️ Running the Server
 
 **Important: First-Run Model Download**
 The first time you start the server, it will automatically download the default KittenTTS Nano model (~25MB) from Hugging Face. This is a one-time process. Subsequent launches will be instant. Additional models are downloaded automatically when selected from the Web UI.
@@ -301,11 +298,11 @@ The first time you start the server, it will automatically download the default 
 
 4.  **To stop the server:** Press `CTRL+C` in the terminal.
 
-### **Raspberry Pi 4 & 5 Installation (CPU-Only)**
+### **Raspberry Pi 5 Installation (CPU-Only)**
 
-KittenTTS runs excellently on Raspberry Pi devices, making it ideal for local network services and DIY projects. However, installation requirements vary significantly between Pi models due to CPU architecture differences.
+KittenTTS runs excellently on Raspberry Pi 5, making it ideal for local network services and DIY projects.
 
-#### **Raspberry Pi 5 - Full Support**
+#### **Raspberry Pi 5 - Full Support ✅**
 
 **Raspberry Pi 5 works out-of-the-box** with the standard Linux installation guide above. No special steps required!
 
@@ -336,17 +333,7 @@ python server.py
 
 > **Important:** During the `pip install -r requirements.txt` step, some Python packages (especially audio processing libraries like `librosa`, `praat-parselmouth`, and others) may need to be compiled from source on ARM architecture. This process can take **15-30 minutes** depending on your SD card speed and system load. This is normal - let it complete without interruption.
 
-#### **Raspberry Pi 4 - Limited Support**
-
-**Raspberry Pi 4 support is currently in development** due to complex dependency compilation issues on 32-bit ARM architecture.
-
-**For Raspberry Pi 4 Users:**
-We recommend upgrading to **64-bit Raspberry Pi OS** if possible, as this significantly improves compatibility with modern Python packages. For users requiring 32-bit support, please check our [GitHub Issues](https://github.com/devnen/Kitten-TTS-Server/issues) for the latest progress updates and community-contributed solutions.
-
-**Alternative Recommendation:**
-For the best Raspberry Pi TTS experience, we strongly recommend using a **Raspberry Pi 5** with the standard 64-bit OS, which provides excellent performance and full compatibility.
-
-## Docker Installation
+## 🐳 Docker Installation
 
 Run Kitten-TTS-Server easily using Docker. The recommended method uses Docker Compose, which is pre-configured for both CPU and NVIDIA GPU deployment.
 
@@ -428,7 +415,7 @@ docker compose exec kitten-tts-server python -c "import torch; print(f'CUDA avai
 ```
 If `CUDA available:` prints `True`, your GPU setup is working correctly
 
-## Usage Guide
+## 💡 Usage Guide
 
 ### Generate Your First Audio
 
@@ -456,7 +443,7 @@ If `CUDA available:` prints `True`, your GPU setup is working correctly
 5.  Click **"Generate Speech"**. The server will process the entire text and stitch the audio together seamlessly.
 6.  Download your complete audiobook file.
 
-## API Documentation
+## 📖 API Documentation
 
 The server exposes two main endpoints for TTS. See `http://localhost:8005/docs` for an interactive playground.
 
@@ -502,7 +489,7 @@ Use this for drop-in compatibility with scripts expecting OpenAI's TTS API struc
 *   `POST /restart_server` — Triggers an async model hot-swap based on current config.
 *   `POST /api/cancel-loading` — Cancels an in-progress model download/load.
 
-## Configuration
+## ⚙️ Configuration
 
 All server settings are managed in the `config.yaml` file. It's created automatically on first launch if it doesn't exist.
 
@@ -513,7 +500,7 @@ All server settings are managed in the `config.yaml` file. It's created automati
 *   `generation_defaults.speed`: Default speech speed (1.0 is normal).
 *   `audio_output.format`: Default audio format (`wav`, `mp3`, `opus`).
 
-## Troubleshooting
+## 🛠️ Troubleshooting
 
 *   **Phonemizer / eSpeak Errors:**
     *   This is the most common issue. Ensure you have installed **eSpeak NG** correctly for your OS and **restarted your terminal** afterward. The server includes auto-detection logic for common install paths.
@@ -529,16 +516,16 @@ All server settings are managed in the `config.yaml` file. It's created automati
     *   Try clearing the `model_cache` directory and restarting.
     *   Large models (Mini 0.1 at ~170MB) may take several minutes on slower connections.
 
-## Acknowledgements & Credits
+## 🙏 Acknowledgements & Credits
 
 *   **Core Model:** This project is powered by the **[KittenTTS model](https://github.com/KittenML/KittenTTS)** created by **[KittenML](https://github.com/KittenML)**. Our work adds a high-performance server and UI layer on top of their excellent lightweight model.
 *   **Core Libraries:** FastAPI, Uvicorn, ONNX Runtime, PyTorch, Hugging Face Hub, Phonemizer.
 *   **UI Inspiration:** The UI/server architecture is inspired by our previous work on the [Chatterbox-TTS-Server](https://github.com/devnen/Chatterbox-TTS-Server).
 
-## License
+## 📄 License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
-## Contributing
+## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome! Please feel free to open an issue or submit a pull request.
